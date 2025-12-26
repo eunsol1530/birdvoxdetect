@@ -261,15 +261,15 @@ def process_file(
     if predict_proba:
         json_path = get_output_path(filepath, suffix + "proba.json", output_dir)
         # Get MD5 hash.
-        hash_md5 = hashlib.md5()
+        hash_sha256 = hashlib.sha256()
         with open(filepath, "rb") as fhandle:
             for chunk in iter(lambda: fhandle.read(4096), b""):
-                hash_md5.update(chunk)
+                hash_sha256.update(chunk)
         json_metadata = {
             "file_name": os.path.basename(filepath),
             "file_path": os.path.abspath(filepath),
             "audio_duration": librosa.get_duration(filename=filepath),
-            "audio_md5_checksum": hash_md5.hexdigest(),
+            "audio_sha256_checksum": hash_sha256.hexdigest(),
             "birdvoxdetect_threshold": threshold,
             "birdvoxactivate_threshold": bva_threshold,
             "classifier_name": classifier_name,
